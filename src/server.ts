@@ -6,6 +6,10 @@ const app: Application = express();
 
 app.use(express.json());
 
+app.get("/", (_req: Request, res: Response) => {
+  res.send("Hello world");
+});
+
 app.use(
   "/graphql",
   graphqlHTTP({
