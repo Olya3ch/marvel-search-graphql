@@ -1,25 +1,25 @@
 import { graphql, buildSchema } from "graphql";
 import axios from "axios";
-
-const OMDBApiURL = `http://www.omdbapi.com/?apikey=8bf835a0`;
+import { apiUrl, apiCredentials } from "./utils";
 
 export const schema = buildSchema(`
-    type Movie {
-        Title: String
-        Year: String
-        imdbID: String
-        Poster: String
+    type Character {
+        id: Int
+        name: String
+        description: String
     }
     type Query {
         hello: String
-        searchMovies(movieName: String): [Movie]
+        characters: [Character]
     }
 `);
 
-const searchMovies = async (args: { movieName: String }) => {
-  const { data } = await axios.get(OMDBApiURL + `&s=${args.movieName}`);
-  return data.Search;
+const characters = async () => {
+  const { data } = await axios.get(
+    apiUrl + "/characters?orderBy=-modified&" + apiCredentials
+  );
+  return data.data.results;
 };
 const hello = () => "Hello world!";
 
-export const rootValue = { hello, searchMovies };
+export const rootValue = { hello, characters };
