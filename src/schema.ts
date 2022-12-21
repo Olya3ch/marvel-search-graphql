@@ -10,6 +10,7 @@ export const schema = buildSchema(`
     }
     type Query {
         hello: String
+        character(id: Int): Character
         characters: [Character]
     }
 `);
@@ -20,6 +21,14 @@ const characters = async () => {
   );
   return data.data.results;
 };
+
+const character = async (args: { id: number }) => {
+  const { data } = await axios.get(
+    apiUrl + `/characters/${args.id}?` + apiCredentials
+  );
+  return data.data.results[0];
+};
+
 const hello = () => "Hello world!";
 
-export const rootValue = { hello, characters };
+export const rootValue = { hello, characters, character };
