@@ -7,13 +7,20 @@ export const schema = buildSchema(`
         id: Int
         name: String
         description: String
+        comics: [Comic]
+    }
+    type Comic {
+        id: Int
+        title: String
     }
     type Query {
         hello: String
         character(id: Int): Character
         characters: [Character]
+        comic(id: Int): Comic
     }
 `);
+const hello = () => "Hello world!";
 
 const characters = async () => {
   const { data } = await axios.get(
@@ -23,12 +30,25 @@ const characters = async () => {
 };
 
 const character = async (args: { id: number }) => {
-  const { data } = await axios.get(
+  const characterResponse = await axios.get(
     apiUrl + `/characters/${args.id}?` + apiCredentials
+  );
+  const characterData = characterResponse.data.data.results[0];
+
+  const comicsResponse = await axios.get(
+    apiUrl + `/characters/${args.id}/comics?` + apiCredentials
+  );
+  const comicsData = { comics: comicsResponse.data.data.results };
+
+  const results = { ...characterData, ...comicsData };
+  return results;
+};
+
+const comic = async (args: { id: number }) => {
+  const { data } = await axios.get(
+    apiUrl + `/comics/${args.id}?` + apiCredentials
   );
   return data.data.results[0];
 };
 
-const hello = () => "Hello world!";
-
-export const rootValue = { hello, characters, character };
+export const rootValue = { hello, characters, character, comic };
