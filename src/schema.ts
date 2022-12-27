@@ -31,7 +31,7 @@ const characters = async () => {
   const resultsWithComics = results.map(
     async (character: Record<string, any>) => {
       const comicsResponse = await axios.get(
-        apiUrl + `/characters/${character.id}/comics?` + apiCredentials
+        apiUrl + `/characters/${character.id}/comics?limit=5&` + apiCredentials
       );
       const comicsData = comicsResponse.data.data.results;
 
@@ -48,7 +48,7 @@ const character = async (args: { id: number }) => {
   const characterData = characterResponse.data.data.results[0];
 
   const comicsResponse = await axios.get(
-    apiUrl + `/characters/${args.id}/comics?` + apiCredentials
+    apiUrl + `/characters/${args.id}/comics?limit=5&` + apiCredentials
   );
   const comicsData = { comics: comicsResponse.data.data.results };
 
