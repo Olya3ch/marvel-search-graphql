@@ -12,6 +12,7 @@ export const schema = buildSchema(`
     type Comic {
         id: Int
         title: String
+        characters: [Character]
     }
     type Query {
         hello: String
@@ -60,7 +61,13 @@ const comic = async (args: { id: number }) => {
   const { data } = await axios.get(
     apiUrl + `/comics/${args.id}?` + apiCredentials
   );
-  return data.data.results[0];
+  const comicData = data.data.results[0];
+  const characterResponse = await axios.get(
+    apiUrl + `/comics/${args.id}/characters?` + apiCredentials
+  );
+  const characterData = characterResponse.data.data.results;
+
+  return { ...comicData, characters: characterData };
 };
 
 export const rootValue = { hello, characters, character, comic };
