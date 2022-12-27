@@ -26,7 +26,19 @@ const characters = async () => {
   const { data } = await axios.get(
     apiUrl + "/characters?orderBy=-modified&" + apiCredentials
   );
-  return data.data.results;
+  const results = data.data.results;
+
+  const resultsWithComics = results.map(
+    async (character: Record<string, any>) => {
+      const comicsResponse = await axios.get(
+        apiUrl + `/characters/${character.id}/comics?` + apiCredentials
+      );
+      const comicsData = comicsResponse.data.data.results;
+
+      return { ...character, comics: comicsData };
+    }
+  );
+  return resultsWithComics;
 };
 
 const character = async (args: { id: number }) => {
