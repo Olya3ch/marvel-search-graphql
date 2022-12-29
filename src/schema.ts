@@ -1,6 +1,7 @@
-import { graphql, buildSchema } from "graphql";
+import { buildSchema } from "graphql";
 import axios from "axios";
-import { apiUrl, apiCredentials } from "./utils";
+import { apiUrlConstructor } from "./api";
+import { Review } from "./db";
 
 export const schema = buildSchema(`
     type Character {
@@ -14,25 +15,33 @@ export const schema = buildSchema(`
         title: String
         characters: [Character]
     }
+    type Review {
+      id: String
+      comicId: Int
+      review: String
+    }
     type Query {
         hello: String
         character(id: Int): Character
         characters: [Character]
         comic(id: Int): Comic
     }
+    type Mutation {
+      addReview(comicId: Int, review: String): Review
+    }
 `);
 const hello = () => "Hello world!";
 
 const characters = async () => {
   const { data } = await axios.get(
-    apiUrl + "/characters?orderBy=-modified&" + apiCredentials
+    apiUrlConstructor("/characters?orderBy=-modified&")
   );
   const results = data.data.results;
 
   const resultsWithComics = results.map(
     async (character: Record<string, any>) => {
       const comicsResponse = await axios.get(
-        apiUrl + `/characters/${character.id}/comics?limit=5&` + apiCredentials
+        apiUrlConstructor(`/characters/${character.id}/comics?limit=5&`)
       );
       const comicsData = comicsResponse.data.data.results;
 
@@ -44,12 +53,12 @@ const characters = async () => {
 
 const character = async (args: { id: number }) => {
   const characterResponse = await axios.get(
-    apiUrl + `/characters/${args.id}?` + apiCredentials
+    apiUrlConstructor(`/characters/${args.id}?`)
   );
   const characterData = characterResponse.data.data.results[0];
 
   const comicsResponse = await axios.get(
-    apiUrl + `/characters/${args.id}/comics?limit=5&` + apiCredentials
+    apiUrlConstructor(`/characters/${args.id}/comics?limit=5&`)
   );
   const comicsData = { comics: comicsResponse.data.data.results };
 
@@ -58,16 +67,22 @@ const character = async (args: { id: number }) => {
 };
 
 const comic = async (args: { id: number }) => {
-  const { data } = await axios.get(
-    apiUrl + `/comics/${args.id}?` + apiCredentials
-  );
+  const { data } = await axios.get(apiUrlConstructor(`/comics/${args.id}?`));
   const comicData = data.data.results[0];
   const characterResponse = await axios.get(
-    apiUrl + `/comics/${args.id}/characters?` + apiCredentials
+    apiUrlConstructor(`/comics/${args.id}/characters?`)
   );
   const characterData = characterResponse.data.data.results;
 
   return { ...comicData, characters: characterData };
 };
 
-export const rootValue = { hello, characters, character, comic };
+const addReview = (args: { comicId: number; review: String }) => {
+  const review = new Review({
+    comicId: args.comicId,
+    review: args.review,
+  });
+  return review.save();
+};
+
+export const rootValue = { hello, characters, character, comic, addReview };

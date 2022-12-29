@@ -8,5 +8,9 @@ const publicKeyApi = process.env.MARVEL_API_PUBLIC_KEY!;
 const stringToHash = ts + process.env.MARVEL_API_PRIVATE_KEY! + publicKeyApi;
 const hash = Md5.hashStr(stringToHash);
 
-export const apiUrl = "https://gateway.marvel.com:443/v1/public";
+export const apiBaseUrl = "https://gateway.marvel.com:443/v1/public";
 export const apiCredentials = `ts=${ts}&apikey=${publicKeyApi}&hash=${hash}`;
+
+export const apiUrlConstructor = (endpoint: String) => {
+  return apiBaseUrl + endpoint + apiCredentials;
+};
