@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import { graphqlHTTP } from "express-graphql";
-import { rootValue, schema } from "./graphQL/schema";
+import { rootValue, schema } from "./graphql/schema";
 import { connectToDatabase } from "./repository/db";
 
 const app: Application = express();
