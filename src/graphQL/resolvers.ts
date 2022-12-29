@@ -1,38 +1,9 @@
-import { buildSchema } from "graphql";
 import axios from "axios";
-import { apiUrlConstructor } from "./api";
-import { Review } from "./db";
+import { apiUrlConstructor } from "../repository/api";
 
-export const schema = buildSchema(`
-    type Character {
-        id: Int
-        name: String
-        description: String
-        comics: [Comic]
-    }
-    type Comic {
-        id: Int
-        title: String
-        characters: [Character]
-    }
-    type Review {
-      id: String
-      comicId: Int
-      review: String
-    }
-    type Query {
-        hello: String
-        character(id: Int): Character
-        characters: [Character]
-        comic(id: Int): Comic
-    }
-    type Mutation {
-      addReview(comicId: Int, review: String): Review
-    }
-`);
-const hello = () => "Hello world!";
+export const hello = () => "Hello world!";
 
-const characters = async () => {
+export const characters = async () => {
   const { data } = await axios.get(
     apiUrlConstructor("/characters?orderBy=-modified&")
   );
@@ -51,7 +22,7 @@ const characters = async () => {
   return resultsWithComics;
 };
 
-const character = async (args: { id: number }) => {
+export const character = async (args: { id: number }) => {
   const characterResponse = await axios.get(
     apiUrlConstructor(`/characters/${args.id}?`)
   );
@@ -66,7 +37,7 @@ const character = async (args: { id: number }) => {
   return results;
 };
 
-const comic = async (args: { id: number }) => {
+export const comic = async (args: { id: number }) => {
   const { data } = await axios.get(apiUrlConstructor(`/comics/${args.id}?`));
   const comicData = data.data.results[0];
   const characterResponse = await axios.get(
@@ -76,13 +47,3 @@ const comic = async (args: { id: number }) => {
 
   return { ...comicData, characters: characterData };
 };
-
-const addReview = (args: { comicId: number; review: String }) => {
-  const review = new Review({
-    comicId: args.comicId,
-    review: args.review,
-  });
-  return review.save();
-};
-
-export const rootValue = { hello, characters, character, comic, addReview };
