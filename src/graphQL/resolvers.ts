@@ -6,6 +6,7 @@ import {
   getComicById,
   getCharactersByComicId,
 } from "../repository/requests";
+import { addReview } from "./mutations";
 
 export const hello = () => "Hello world!";
 
@@ -27,3 +28,5 @@ export const comic = async (args: { id: number }) => {
 
   return { ...comic, characters: characters };
 };
+
+export const rootValue = { hello, characters, character, comic, addReview };

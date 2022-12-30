@@ -1,6 +1,4 @@
 import { buildSchema } from "graphql";
-import { addReview } from "./mutations";
-import { hello, characters, character, comic } from "./resolvers";
 
 export const schema = buildSchema(`
     type Character {
@@ -30,4 +28,3 @@ export const schema = buildSchema(`
     }
 `);
 
-export const rootValue = { hello, characters, character, comic, addReview };
