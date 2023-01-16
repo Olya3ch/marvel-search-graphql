@@ -1,6 +1,4 @@
-import { buildSchema } from "graphql";
-
-export const schema = buildSchema(`
+export const typeDefs = `#graphql
     type Character {
         id: Int
         name: String
@@ -26,5 +24,4 @@ export const schema = buildSchema(`
     type Mutation {
       addReview(comicId: Int, review: String): Review
     }
-`);
-
+`;

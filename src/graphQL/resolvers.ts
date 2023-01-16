@@ -29,4 +29,7 @@ export const comic = async (args: { id: number }) => {
   return { ...comic, characters: characters };
 };
 
-export const rootValue = { hello, characters, character, comic, addReview };
+export const resolvers = {
+  Query: { hello, characters, character, comic },
+  Mutation: { addReview },
+};
