@@ -5,7 +5,7 @@ import { resolvers } from "../graphql/resolvers";
 import { typeDefs } from "../graphql/schema";
 
 export const createTestApolloServer = async (
-  listenOptions: ListenOptions = { port: 3000 }
+  listenOptions: ListenOptions = { port: 0 }
 ) => {
   const server = new ApolloServer({
     typeDefs,
