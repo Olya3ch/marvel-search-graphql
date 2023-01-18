@@ -1,15 +1,7 @@
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
-import { resolvers } from "./graphql/resolvers";
-import { typeDefs } from "./graphql/schema";
 import { connectToDatabase } from "./repository/db";
+import { createApolloServer } from "./utils";
 
 connectToDatabase().then(async () => {
-  const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-  });
-
-  const { url } = await startStandaloneServer(server);
+  const { url } = await createApolloServer();
   console.log(`🚀 Server ready at ${url}`);
 });

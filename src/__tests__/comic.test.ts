@@ -1,6 +1,6 @@
 import request from "supertest";
 import { characters } from "../graphql/resolvers";
-import { createTestApolloServer } from "./utils";
+import { createApolloServer } from "../utils";
 
 const { objectContaining, arrayContaining } = expect;
 
@@ -21,7 +21,7 @@ describe("comic resolver", () => {
   let server: any, url: string;
 
   beforeAll(async () => {
-    ({ server, url } = await createTestApolloServer());
+    ({ server, url } = await createApolloServer({ port: 0 }));
   });
 
   it("shows comic by id", async () => {

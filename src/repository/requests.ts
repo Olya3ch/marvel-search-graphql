@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiUrlConstructor } from "./api";
+import { apiUrlConstructor } from "../utils";
 
 export const getCharacters = async () => {
   const { data } = await axios.get(

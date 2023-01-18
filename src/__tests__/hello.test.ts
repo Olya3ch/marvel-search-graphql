@@ -1,5 +1,5 @@
 import request from "supertest";
-import { createTestApolloServer } from "./utils";
+import { createApolloServer } from "../utils";
 
 const queryData = {
   query: `query hello{
@@ -11,7 +11,7 @@ describe("hello resolver", () => {
   let server: any, url: string;
 
   beforeAll(async () => {
-    ({ server, url } = await createTestApolloServer());
+    ({ server, url } = await createApolloServer({ port: 0 }));
   });
 
   it("says hello", async () => {

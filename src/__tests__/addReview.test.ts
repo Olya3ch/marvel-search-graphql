@@ -1,6 +1,6 @@
 import request from "supertest";
 import { connectToDatabase } from "../repository/db";
-import { createTestApolloServer } from "./utils";
+import { createApolloServer } from "../utils";
 
 const queryData = {
   query: `mutation addReview($comicId: Int, $review: String) {
@@ -16,7 +16,7 @@ describe("addReview mutation", () => {
   let server: any, url: string;
 
   beforeAll(async () => {
-    ({ server, url } = await createTestApolloServer());
+    ({ server, url } = await createApolloServer({ port: 0 }));
     connectToDatabase();
   });
 

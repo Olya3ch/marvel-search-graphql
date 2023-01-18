@@ -1,5 +1,5 @@
 import request from "supertest";
-import { createTestApolloServer } from "./utils";
+import { createApolloServer } from "../utils";
 
 const { objectContaining, arrayContaining } = expect;
 
@@ -20,7 +20,7 @@ describe("characters resolver", () => {
   let server: any, url: string;
 
   beforeAll(async () => {
-    ({ server, url } = await createTestApolloServer());
+    ({ server, url } = await createApolloServer({ port: 0 }));
   });
 
   it("shows character list", async () => {
