@@ -1,5 +1,4 @@
 import request from "supertest";
-import { characters } from "../graphql/resolvers";
 import { createApolloServer } from "../utils";
 
 const { objectContaining, arrayContaining } = expect;
