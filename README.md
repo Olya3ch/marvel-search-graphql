@@ -1,4 +1,4 @@
-# Welcome to my Marvel Search with GraphQL!
+# Welcome to my Marvel Search with GraphQL
 
 This is a personal project for Marvel Search with GraphQL.
 
