@@ -1,3 +1,4 @@
+import { ApolloServer } from "@apollo/server";
 import request from "supertest";
 import { createApolloServer } from "../utils";
 
@@ -8,7 +9,7 @@ const queryData = {
 };
 
 describe("hello resolver", () => {
-  let server: any, url: string;
+  let server: ApolloServer, url: string;
 
   beforeAll(async () => {
     ({ server, url } = await createApolloServer({ port: 0 }));
