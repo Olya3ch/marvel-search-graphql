@@ -8,21 +8,21 @@ import {
 } from "../repository/requests";
 import { addReview } from "./mutations";
 
-export const hello = () => "Hello world!";
+const hello = () => "Hello world!";
 
-export const characters = async () => {
+const characters = async () => {
   const characters = await getCharacters();
   const results = await addComicsToCharacters(characters);
   return results;
 };
 
-export const character = async (_: any, args: { id: number }) => {
+const character = async (_: any, args: { id: number }) => {
   const character = await getCharacterById(args.id);
   const comics = await getComicsByCharacterId(args.id);
   return { ...character, ...{ comics: comics } };
 };
 
-export const comic = async (_: any, args: { id: number }) => {
+const comic = async (_: any, args: { id: number }) => {
   const comic = await getComicById(args.id);
   const characters = await getCharactersByComicId(args.id);
 
